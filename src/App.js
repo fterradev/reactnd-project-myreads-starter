@@ -60,13 +60,25 @@ class BooksApp extends React.Component {
     showSearchPage: false
   }
 
+  onMoveBook = (book, shelfId) => {
+    this.setState((state) => {
+      const otherBooks = state.books.filter((other) => (other.cover.url !== book.cover.url))
+      book.currentShelf = shelfId
+      return {books: otherBooks.concat([ book ])}
+    })
+  }
+
   render() {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
           <SearchBooks onNavigateToList={() => this.setState({ showSearchPage: false })} />
         ) : (
-          <ListBooks books={this.state.books} onNavigateToSearch={() => this.setState({ showSearchPage: true })} />
+          <ListBooks
+            books={this.state.books}
+            onNavigateToSearch={() => this.setState({ showSearchPage: true })}
+            onMoveBook={this.onMoveBook}
+          />
         )}
       </div>
     )

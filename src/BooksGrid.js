@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class BooksGrid extends Component {
   render() {
-    const { shelfId, books } = this.props
+    const { shelfId, books, onMoveBook } = this.props
     const gridBooks = (shelfId !== null)
       ? books.filter((book) => (book.currentShelf === shelfId))
       : books
@@ -14,7 +14,7 @@ class BooksGrid extends Component {
               <div className="book-top">
                 <div className="book-cover" style={{ width: book.cover.width, height: book.cover.height, backgroundImage: `url("${book.cover.url}")` }}></div>
                 <div className="book-shelf-changer">
-                  <select value={shelfId}>
+                  <select value={shelfId} onChange={(event) => onMoveBook(book, event.target.value)}>
                     <option value="none" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
