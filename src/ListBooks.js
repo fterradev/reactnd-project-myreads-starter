@@ -25,7 +25,13 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             {shelves.map((shelf) => (
-              <BookShelf title={shelf.title} id={shelf.id} books={this.props.books} onMoveBook={this.props.onMoveBook} />
+              <BookShelf
+                key={shelf.id}
+                title={shelf.title}
+                id={shelf.id}
+                books={this.props.books}
+                onMoveBook={this.props.onMoveBook}
+              />
             ))}
             
           </div>

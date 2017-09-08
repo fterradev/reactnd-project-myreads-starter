@@ -4,15 +4,22 @@ class BooksGrid extends Component {
   render() {
     const { shelfId, books, onMoveBook } = this.props
     const gridBooks = (shelfId !== null)
-      ? books.filter((book) => (book.currentShelf === shelfId))
+      ? books.filter((book) => (book.shelf === shelfId))
       : books
     return (
       <ol className="books-grid">
         {gridBooks.map((book) => (
-          <li>
+          <li key={book.id}>
             <div className="book">
               <div className="book-top">
-                <div className="book-cover" style={{ width: book.cover.width, height: book.cover.height, backgroundImage: `url("${book.cover.url}")` }}></div>
+                <div
+                  className="book-cover"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: `url("${book.imageLinks.thumbnail}")`
+                  }}
+                ></div>
                 <div className="book-shelf-changer">
                   <select value={shelfId} onChange={(event) => onMoveBook(book, event.target.value)}>
                     <option value="none" disabled>Move to...</option>
