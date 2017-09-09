@@ -17,7 +17,7 @@ class BooksGrid extends Component {
                   style={{
                     width: '100%',
                     height: '100%',
-                    backgroundImage: `url("${book.imageLinks.thumbnail}")`
+                    backgroundImage: book.imageLinks ? `url("${book.imageLinks.thumbnail}")` : ''
                   }}
                 ></div>
                 <div className="book-shelf-changer">
