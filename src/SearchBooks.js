@@ -15,13 +15,13 @@ class SearchBooks extends Component {
     if (query.length > 0) {
       BooksAPI.search(query).then((results) => {
         this.setState((state) => {
-          if (state.query === query)
+          if (state.query === query) // checks if the query is still the same value supplied for this search request
             return { books: Array.isArray(results) ? results : [] }
         })
       })
     } else {
       this.setState((state) => {
-        if (state.query === query)
+        if (state.query === query) // checks if the query is still the same value supplied earlier
           return { books: [] }
       })
     }
