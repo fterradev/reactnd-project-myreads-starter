@@ -9,6 +9,15 @@ class SearchBooks extends Component {
     books: []
   }
 
+  prepareBook(book) {
+    const shelfBook = this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id))
+    if (shelfBook)
+      return shelfBook;
+    const newBook = book
+    newBook.shelf = 'none'
+    return newBook;
+  }
+
   updateQuery(rawQuery) {
     const query = rawQuery;
     this.setState({ query });
@@ -16,7 +25,7 @@ class SearchBooks extends Component {
       BooksAPI.search(query).then((results) => {
         this.setState((state) => {
           if (state.query === query) // checks if the query is still the same value supplied for this search request
-            return { books: Array.isArray(results) ? results : [] }
+            return { books: (Array.isArray(results)) ? results.map((book) => (this.prepareBook(book))) : [] }
         })
       })
     } else {
@@ -25,6 +34,10 @@ class SearchBooks extends Component {
           return { books: [] }
       })
     }
+  }
+
+  componentDidMount() {
+    document.querySelector('input#search-query').focus();
   }
 
   render() {
@@ -43,6 +56,7 @@ class SearchBooks extends Component {
             you don't find a specific author or title. Every search is limited by search terms.
           */}
             <input
+              id="search-query"
               type="text"
               placeholder="Search by title or author"
               value={query}

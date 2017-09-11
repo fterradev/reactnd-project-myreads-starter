@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class BooksGrid extends Component {
   render() {
     const { shelfId, books, onMoveBook } = this.props
-    const gridBooks = (shelfId !== null)
+    const gridBooks = (shelfId !== undefined)
       ? books.filter((book) => (book.shelf === shelfId))
       : books
     return (
@@ -21,7 +21,7 @@ class BooksGrid extends Component {
                   }}
                 ></div>
                 <div className="book-shelf-changer">
-                  <select value={shelfId} onChange={(event) => onMoveBook(book, event.target.value)}>
+                  <select value={book.shelf} onChange={(event) => onMoveBook(book, event.target.value)}>
                     <option value="none" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>
