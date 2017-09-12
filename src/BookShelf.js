@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import BooksGrid from './BooksGrid'
 
-class BookShelf extends Component {
+class Bookshelf extends Component {
   render() {
     return (
       <div className="bookshelf">
@@ -14,4 +14,4 @@ class BookShelf extends Component {
   }
 }
 
-export default BookShelf
+export default Bookshelf

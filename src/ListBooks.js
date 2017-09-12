@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import BookShelf from './BookShelf'
+import Bookshelf from './Bookshelf'
 import { Link } from 'react-router-dom'
 
 class ListBooks extends Component {
@@ -26,7 +26,7 @@ class ListBooks extends Component {
         <div className="list-books-content">
           <div>
             {shelves.map((shelf) => (
-              <BookShelf
+              <Bookshelf
                 key={shelf.id}
                 title={shelf.title}
                 id={shelf.id}
