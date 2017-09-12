@@ -10,12 +10,11 @@ class SearchBooks extends Component {
   }
 
   prepareBook(book) {
+    const preparedBook = book
     const shelfBook = this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id))
     if (shelfBook)
-      return shelfBook;
-    const newBook = book
-    newBook.shelf = 'none'
-    return newBook;
+      preparedBook.shelf = shelfBook.shelf;
+    return preparedBook;
   }
 
   updateQuery(rawQuery) {
@@ -68,6 +67,7 @@ class SearchBooks extends Component {
         <div className="search-books-results">
           <BooksGrid
             books={this.state.books}
+            onMoveBook={this.props.onMoveBook}
           />
         </div>
       </div>
