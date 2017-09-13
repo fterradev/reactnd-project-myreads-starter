@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import BooksGrid from './BooksGrid'
 import * as BooksAPI from './BooksAPI'
 import debounce from 'debounce'
+import queryString from 'query-string'
 
 class SearchBooks extends Component {
   state = {
@@ -11,35 +12,35 @@ class SearchBooks extends Component {
     books: []
   }
 
-  debouncedSearch = debounce(
-    (query) => (
-      BooksAPI.search(query).then((results) => {
-        this.setState((state) => {
-          if (state.query === query) {// checks if the query is still the same value supplied for this search request
-            return (Array.isArray(results))
-              ? {
-                books: results.map((book) => (
-                  
-                  // assign apropriate shelf for the book
-                  Object.assign({}, book, {
-                    shelf: (
-                      this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id)) // find the same book in some shelf
-                      || { shelf: undefined } // otherwise set the shelf to undefined
-                    ).shelf
-                  })
-                )),
-                resultsAreUpToDate: true
-              }
-              : {
-                books: [],
-                resultsAreUpToDate: true
-              }
-          }
-        })
+  search = (query) => (
+    BooksAPI.search(query).then((results) => {
+      this.setState((state) => {
+        if (state.query === query) {// checks if the query is still the same value supplied for this search request
+          this.props.history.push({ search: `q=${query}` })
+          return (Array.isArray(results))
+            ? {
+              books: results.map((book) => (
+                
+                // assign apropriate shelf for the book
+                Object.assign({}, book, {
+                  shelf: (
+                    this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id)) // find the same book in some shelf
+                    || { shelf: undefined } // otherwise set the shelf to undefined
+                  ).shelf
+                })
+              )),
+              resultsAreUpToDate: true
+            }
+            : {
+              books: [],
+              resultsAreUpToDate: true
+            }
+        }
       })
-    ),
-    250 // debounce wait time
+    })
   )
+  
+  debouncedSearch = debounce(this.search, 250) // debounce wait time
 
   updateQuery(rawQuery) {
     const query = rawQuery;
@@ -51,16 +52,26 @@ class SearchBooks extends Component {
       this.debouncedSearch(query)
     } else {
       this.setState((state) => {
-        if (state.query === query) // checks if the query is still the same value supplied earlier
+        if (state.query === query) { // checks if the query is still the same value supplied earlier
+          this.props.history.push({ search: '' })
           return {
             books: [],
             resultsAreUpToDate: true
           }
+        }
       })
     }
   }
 
   componentDidMount() {
+    const query = queryString.parse(this.props.history.location.search).q || '';
+    if (query.length > 0) {
+      this.setState((state) => ({
+        query,
+        resultsAreUpToDate: false
+      }));
+      this.search(query);
+    }
     document.querySelector('input#search-query').focus();
   }
 
@@ -89,7 +100,9 @@ class SearchBooks extends Component {
 
           </div>
         </div>
-        {query.length > 0 && resultsAreUpToDate && books.length === 0 && (
+        {query.length > 0
+        && resultsAreUpToDate
+        && books.length === 0 && (
           <div className="search-books-no-results">
             <span>No results for "{query}"</span>
           </div>
