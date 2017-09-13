@@ -16,19 +16,20 @@ class SearchBooks extends Component {
       BooksAPI.search(query).then((results) => {
         this.setState((state) => {
           if (state.query === query) // checks if the query is still the same value supplied for this search request
-            //return { books: (Array.isArray(results)) ? results.map((book) => (this.prepareBook(book))) : [] }
-            return {
-              books: ( results || [] ).map((book) => (
-                
-                // assign apropriate shelf for the book
-                Object.assign({}, book, {
-                  shelf: (
-                    this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id)) // find the same book in some shelf
-                    || { shelf: undefined } // otherwise set the shelf to undefined
-                  ).shelf
-                })
-              ))
-            }
+            return (Array.isArray(results))
+              ? {
+                books: results.map((book) => (
+                  
+                  // assign apropriate shelf for the book
+                  Object.assign({}, book, {
+                    shelf: (
+                      this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id)) // find the same book in some shelf
+                      || { shelf: undefined } // otherwise set the shelf to undefined
+                    ).shelf
+                  })
+                ))
+              }
+              : { books: [] }
         })
       })
     } else {
