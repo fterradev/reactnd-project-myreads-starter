@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import BooksGrid from './BooksGrid'
 import * as BooksAPI from './BooksAPI'
+import debounce from 'debounce'
 
 class SearchBooks extends Component {
   state = {
@@ -9,13 +10,11 @@ class SearchBooks extends Component {
     books: []
   }
 
-  updateQuery(rawQuery) {
-    const query = rawQuery;
-    this.setState({ query });
-    if (query.length > 0) {
+  debouncedSearch = debounce(
+    (query) => (
       BooksAPI.search(query).then((results) => {
         this.setState((state) => {
-          if (state.query === query) // checks if the query is still the same value supplied for this search request
+          if (state.query === query) {// checks if the query is still the same value supplied for this search request
             return (Array.isArray(results))
               ? {
                 books: results.map((book) => (
@@ -30,8 +29,18 @@ class SearchBooks extends Component {
                 ))
               }
               : { books: [] }
+          }
         })
       })
+    ),
+    250 // debounce wait time
+  )
+
+  updateQuery(rawQuery) {
+    const query = rawQuery;
+    this.setState({ query });
+    if (query.length > 0) {
+      this.debouncedSearch(query)
     } else {
       this.setState((state) => {
         if (state.query === query) // checks if the query is still the same value supplied earlier
