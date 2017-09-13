@@ -21,10 +21,12 @@ class SearchBooks extends Component {
               books: ( results || [] ).map((book) => (
                 
                 // assign apropriate shelf for the book
-                Object.assign({}, book, { shelf: (
-                  this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id)) // find the same book in some shelf
-                  || { shelf: undefined } // otherwise set the shelf to undefined
-                ).shelf })
+                Object.assign({}, book, {
+                  shelf: (
+                    this.props.shelfBooks.find((shelfBook) => (shelfBook.id === book.id)) // find the same book in some shelf
+                    || { shelf: undefined } // otherwise set the shelf to undefined
+                  ).shelf
+                })
               ))
             }
         })
