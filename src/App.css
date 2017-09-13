@@ -99,8 +99,12 @@ body, .app {
   font-size: 0;
 }
 
-.search-books-results {
+.search-books-results, .search-books-no-results {
   padding: 80px 10px 20px;
+}
+
+.search-books-no-results {
+  text-align: center;
 }
 
 /* books grid */

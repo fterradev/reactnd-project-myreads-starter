@@ -7,6 +7,7 @@ import debounce from 'debounce'
 class SearchBooks extends Component {
   state = {
     query: '',
+    resultsAreUpToDate: true, 
     books: []
   }
 
@@ -26,9 +27,13 @@ class SearchBooks extends Component {
                       || { shelf: undefined } // otherwise set the shelf to undefined
                     ).shelf
                   })
-                ))
+                )),
+                resultsAreUpToDate: true
               }
-              : { books: [] }
+              : {
+                books: [],
+                resultsAreUpToDate: true
+              }
           }
         })
       })
@@ -38,13 +43,19 @@ class SearchBooks extends Component {
 
   updateQuery(rawQuery) {
     const query = rawQuery;
-    this.setState({ query });
+    this.setState({
+      query,
+      resultsAreUpToDate: false
+    });
     if (query.length > 0) {
       this.debouncedSearch(query)
     } else {
       this.setState((state) => {
         if (state.query === query) // checks if the query is still the same value supplied earlier
-          return { books: [] }
+          return {
+            books: [],
+            resultsAreUpToDate: true
+          }
       })
     }
   }
@@ -54,7 +65,7 @@ class SearchBooks extends Component {
   }
 
   render() {
-    const { query } = this.state;
+    const { query, resultsAreUpToDate, books } = this.state;
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -78,9 +89,14 @@ class SearchBooks extends Component {
 
           </div>
         </div>
+        {query.length > 0 && resultsAreUpToDate && books.length === 0 && (
+          <div className="search-books-no-results">
+            <span>No results for "{query}"</span>
+          </div>
+        )}
         <div className="search-books-results">
           <BooksGrid
-            books={this.state.books}
+            books={books}
             onMoveBook={this.props.onMoveBook}
           />
         </div>
