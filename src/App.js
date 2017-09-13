@@ -20,6 +20,9 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelfId).then((res) => {
       this.setState((state) => {
         const otherBooks = state.books.filter((other) => (other.id !== book.id))
+        if (res[shelfId] === undefined) { // The book has been moved to a shelf that doesn't exist, thus it has been removed.
+          return {books: otherBooks}
+        }
         book.shelf = shelfId
         return {books: otherBooks.concat([ book ])}
       })
