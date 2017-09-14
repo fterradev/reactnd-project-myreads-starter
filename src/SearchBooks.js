@@ -48,7 +48,7 @@ class SearchBooks extends Component {
   debouncedSearch = debounce(this.search, 250) // debounce wait time
 
   updateQuery(rawQuery) {
-    const query = rawQuery;
+    const query = this.formatQuery(rawQuery);
     this.setState({
       query,
       resultsAreUpToDate: false
@@ -67,6 +67,12 @@ class SearchBooks extends Component {
       })
     }
   }
+
+  formatQuery = (query) => (
+    query
+      .replace(/^ {1,}/, '') // remove leading spaces
+      .replace(/ {2,}/g, ' ') // remove duplicated spaces
+  )
 
   componentDidMount() {
     const query = this.props.initialSearchQuery;
