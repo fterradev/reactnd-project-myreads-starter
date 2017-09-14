@@ -9,7 +9,7 @@ class SearchBooks extends Component {
   static propTypes = {
     shelfBooks: PropTypes.arrayOf(PropTypes.object).isRequired,
     onMoveBook: PropTypes.func.isRequired,
-    initialSearchQuery: PropTypes.string,
+    initialQuery: PropTypes.string,
     onQueryUpdated: PropTypes.func
   }
   
@@ -19,6 +19,10 @@ class SearchBooks extends Component {
     books: []
   }
 
+  /**
+  * @description Makes the query available externally.
+  * @param {string} query
+  */
   onQueryUpdated = (query) => {
     if (this.props.onQueryUpdated)
       this.props.onQueryUpdated(query);
@@ -83,7 +87,7 @@ class SearchBooks extends Component {
   )
 
   componentDidMount() {
-    const query = this.props.initialSearchQuery;
+    const query = this.props.initialQuery;
     if (query) {
       this.setState((state) => ({
         query,

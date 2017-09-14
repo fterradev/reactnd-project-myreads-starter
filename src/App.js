@@ -49,7 +49,7 @@ class BooksApp extends React.Component {
           <SearchBooks
             shelfBooks={this.state.books}
             onMoveBook={this.onMoveBook}
-            initialSearchQuery={queryString.parse(history.location.search)[searchParam] || ''}
+            initialQuery={queryString.parse(history.location.search)[searchParam] || ''}
             onQueryUpdated={(query) => {this.onSearchQueryUpdated(query, history, searchParam)}} />
         )}/>
         <Route exact path='/' render={() => (
