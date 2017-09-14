@@ -3,8 +3,16 @@ import { Link } from 'react-router-dom'
 import BooksGrid from './BooksGrid'
 import * as BooksAPI from './BooksAPI'
 import debounce from 'debounce'
+import PropTypes from 'prop-types'
 
 class SearchBooks extends Component {
+  static propTypes = {
+    shelfBooks: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onMoveBook: PropTypes.func.isRequired,
+    initialSearchQuery: PropTypes.string,
+    onQueryUpdated: PropTypes.func
+  }
+  
   state = {
     query: '',
     resultsAreUpToDate: true, 

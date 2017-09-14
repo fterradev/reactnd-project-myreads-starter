@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import BooksGrid from './BooksGrid'
+import PropTypes from 'prop-types'
 
 class Bookshelf extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    books: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onMoveBook: PropTypes.func.isRequired
+  }
   render() {
     return (
       <div className="bookshelf">
