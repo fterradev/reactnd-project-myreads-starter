@@ -1,14 +1,41 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { getImageSize } from './getImageSize'
 
 class Book extends Component {
   static propTypes = {
     data: PropTypes.object.isRequired,
     onMoveBook: PropTypes.func.isRequired
   }
+
+  state = {
+    imageURL: null,
+    imageSize: {
+      width: '100%',
+      height: '100%'
+    }
+  }
+
+  componentDidMount() {
+    const { imageLinks } = this.props.data
+    const imageURL = imageLinks ? imageLinks.thumbnail : null;
+    if (imageURL)
+      getImageSize(imageURL).then((imageSize) => {
+        this.setState({
+          imageURL,
+          imageSize
+        })
+      }).catch((reason) => {
+        // do nothing - keep initial state
+      })
+  }
+
   render() {
-    const { data, onMoveBook } = this.props
-    const { authors = [], shelf = 'none' } = data
+    const { data, onMoveBook } = this.props;
+    const { authors = [], shelf = 'none' } = data;
+    const { imageURL } = this.state;
+    const { width, height } = this.state.imageSize;
+    
     return (
       <li key={data.id}>
         <div className="book">
@@ -16,9 +43,9 @@ class Book extends Component {
             <div
               className="book-cover"
               style={{
-                width: '100%',
-                height: '100%',
-                backgroundImage: data.imageLinks ? `url("${data.imageLinks.thumbnail}")` : ''
+                width,
+                height,
+                backgroundImage: imageURL ? `url("${imageURL}")` : ''
               }}
             ></div>
             <div className="book-shelf-changer">
