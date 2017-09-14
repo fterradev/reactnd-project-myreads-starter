@@ -3,6 +3,7 @@ import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
 import * as BooksAPI from './BooksAPI'
 import { Route } from 'react-router-dom'
+import queryString from 'query-string'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -29,14 +30,27 @@ class BooksApp extends React.Component {
     })
   }
 
+  onSearchQueryUpdated = (query, history, searchParam) => {
+    history.replace({
+      search: (query) ? `${searchParam}=${query}` : ''
+    })
+    /* const locationSearchObj = queryString.parse(history.location.search);
+    locationSearchObj[searchParam] = (query) ? query : undefined;
+    history.replace({
+      search: queryString.stringify(locationSearchObj)
+    }) */
+  }
+
   render() {
+    const searchParam = 'q'
     return (
       <div className="app">
         <Route path='/search' render={({ history }) => (
           <SearchBooks
             shelfBooks={this.state.books}
             onMoveBook={this.onMoveBook}
-            history={history} />
+            initialSearchQuery={queryString.parse(history.location.search)[searchParam] || ''}
+            onQueryUpdated={(query) => {this.onSearchQueryUpdated(query, history, searchParam)}} />
         )}/>
         <Route exact path='/' render={() => (
           <ListBooks

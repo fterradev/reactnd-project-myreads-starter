@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import BooksGrid from './BooksGrid'
 import * as BooksAPI from './BooksAPI'
 import debounce from 'debounce'
-import queryString from 'query-string'
 
 class SearchBooks extends Component {
   state = {
@@ -12,11 +11,17 @@ class SearchBooks extends Component {
     books: []
   }
 
-  search = (query) => (
+  onQueryUpdated = (query) => {
+    if (this.props.onQueryUpdated)
+      this.props.onQueryUpdated(query);
+  }
+
+  search = (query, bypassQueryUpdate) => (
     BooksAPI.search(query).then((results) => {
       this.setState((state) => {
         if (state.query === query) {// checks if the query is still the same value supplied for this search request
-          this.props.history.push({ search: `q=${query}` })
+          if (!bypassQueryUpdate)
+            this.onQueryUpdated(query);
           return (Array.isArray(results))
             ? {
               books: results.map((book) => (
@@ -53,7 +58,7 @@ class SearchBooks extends Component {
     } else {
       this.setState((state) => {
         if (state.query === query) { // checks if the query is still the same value supplied earlier
-          this.props.history.push({ search: '' })
+          this.onQueryUpdated(query);
           return {
             books: [],
             resultsAreUpToDate: true
@@ -64,13 +69,13 @@ class SearchBooks extends Component {
   }
 
   componentDidMount() {
-    const query = queryString.parse(this.props.history.location.search).q || '';
-    if (query.length > 0) {
+    const query = this.props.initialSearchQuery;
+    if (query) {
       this.setState((state) => ({
         query,
         resultsAreUpToDate: false
       }));
-      this.search(query);
+      this.search(query, true);
     }
     document.querySelector('input#search-query').focus();
   }
