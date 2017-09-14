@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 class BooksGrid extends Component {
   static propTypes = {
-    shelfId: PropTypes.string.isRequired,
+    shelfId: PropTypes.string,
     books: PropTypes.arrayOf(PropTypes.object).isRequired,
     onMoveBook: PropTypes.func.isRequired
   }
