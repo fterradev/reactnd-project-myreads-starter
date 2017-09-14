@@ -1,4 +1,4 @@
-export const getImageSize = (url) => 
+export const getImageSize = url =>
   new Promise((resolve, reject) => {
     const image = new Image();
 
@@ -7,9 +7,9 @@ export const getImageSize = (url) =>
         width: `${image.width}px`,
         height: `${image.height}px`
       });
-    }
+    };
     image.onerror = () => {
-      reject('Failed to load image.')
-    }
+      reject('Failed to load image.');
+    };
     image.src = url;
-  })
+  });

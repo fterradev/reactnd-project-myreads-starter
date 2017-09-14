@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import Bookshelf from './Bookshelf'
-import { Link } from 'react-router-dom'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import Bookshelf from './Bookshelf';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class ListBooks extends Component {
   static propTypes = {
     books: PropTypes.arrayOf(PropTypes.object).isRequired,
     onMoveBook: PropTypes.func.isRequired
-  }
+  };
   render() {
     const shelves = [
       {
@@ -22,7 +22,7 @@ class ListBooks extends Component {
         title: 'Read',
         id: 'read'
       }
-    ]
+    ];
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -30,7 +30,7 @@ class ListBooks extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            {shelves.map((shelf) => (
+            {shelves.map(shelf => (
               <Bookshelf
                 key={shelf.id}
                 title={shelf.title}
@@ -39,15 +39,14 @@ class ListBooks extends Component {
                 onMoveBook={this.props.onMoveBook}
               />
             ))}
-            
           </div>
         </div>
         <div className="open-search">
-          <Link to='/search'>Add a book</Link>
+          <Link to="/search">Add a book</Link>
         </div>
       </div>
-    )
+    );
   }
 }
 
-export default ListBooks
+export default ListBooks;
