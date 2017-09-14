@@ -32,7 +32,7 @@ class BooksApp extends React.Component {
 
   onSearchQueryUpdated = (query, history, searchParam) => {
     history.replace({
-      search: (query) ? `${searchParam}=${query}` : ''
+      search: (query) ? `${searchParam}=${encodeURIComponent(query)}` : ''
     })
     /* const locationSearchObj = queryString.parse(history.location.search);
     locationSearchObj[searchParam] = (query) ? query : undefined;
