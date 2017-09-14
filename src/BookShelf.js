@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 class Bookshelf extends Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.oneOf(['wantToRead', 'currentlyReading', 'read']).isRequired,
     title: PropTypes.string.isRequired,
     books: PropTypes.arrayOf(PropTypes.object).isRequired,
     onMoveBook: PropTypes.func.isRequired
