@@ -40,7 +40,7 @@ class SearchBooks extends Component {
                   Object.assign({}, book, {
                     shelf: (this.props.shelfBooks.find(
                       shelfBook => shelfBook.id === book.id
-                    ) || { shelf: undefined }).shelf // find the same book in some shelf // otherwise set the shelf to undefined
+                    ) || {shelf: undefined}).shelf // find the same book in some shelf // otherwise set the shelf to undefined
                   })
                 ),
                 resultsAreUpToDate: true

@@ -23,10 +23,10 @@ class BooksApp extends React.Component {
         const otherBooks = state.books.filter(other => other.id !== book.id);
         if (res[shelfId] === undefined) {
           // The book has been moved to a shelf that doesn't exist, thus it has been removed.
-          return { books: otherBooks };
+          return {books: otherBooks};
         }
         book.shelf = shelfId;
-        return { books: otherBooks.concat([book]) };
+        return {books: otherBooks.concat([book])};
       });
     });
   };
