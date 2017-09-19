@@ -7,7 +7,9 @@ const BooksGrid = ({ shelfId, books, onMoveBook }) => {
     shelfId !== undefined ? books.filter(book => book.shelf === shelfId) : books;
   return (
     <ol className="books-grid">
-      {gridBooks.map(book => <Book key={book.id} data={book} onMoveBook={onMoveBook} />)}
+      {gridBooks.map(book => 
+        <Book key={book.id} data={book} onMoveBook={onMoveBook} />
+      )}
     </ol>
   );
 };
