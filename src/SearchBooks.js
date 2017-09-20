@@ -120,14 +120,14 @@ class SearchBooks extends Component {
             />
           </div>
         </div>
-        {query.length > 0 &&
-        resultsAreUpToDate &&
-        books.length === 0 && (
-          <div className="search-books-no-results">
-            <span>No results for "{query}"</span>
-          </div>
-        )}
         <div className="search-books-results">
+          {query.length > 0 &&
+          resultsAreUpToDate &&
+          books.length === 0 && (
+            <div className="search-books-results-message">
+              <span>No results for "{query}"</span>
+            </div>
+          )}
           <BooksGrid books={books} onMoveBook={this.props.onMoveBook} />
         </div>
       </div>

@@ -99,11 +99,11 @@ body, .app {
   font-size: 0;
 }
 
-.search-books-results, .search-books-no-results {
+.search-books-results {
   padding: 80px 10px 20px;
 }
 
-.search-books-no-results {
+.search-books-results-message {
   text-align: center;
 }
 
