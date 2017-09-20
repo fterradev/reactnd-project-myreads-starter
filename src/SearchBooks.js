@@ -125,7 +125,7 @@ class SearchBooks extends Component {
           resultsAreUpToDate &&
           books.length === 0 && (
             <div className="search-books-results-message">
-              <span>No results for "{query}"</span>
+              <span>No results for &quot;{query}&quot;</span>
             </div>
           )}
           <BooksGrid books={books} onMoveBook={this.props.onMoveBook} />
