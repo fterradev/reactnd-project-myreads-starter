@@ -17,16 +17,50 @@ class BooksApp extends React.Component {
     });
   }
 
+  shelves = [
+    {
+      title: 'Currently Reading',
+      id: 'currentlyReading'
+    },
+    {
+      title: 'Want to Read',
+      id: 'wantToRead'
+    },
+    {
+      title: 'Read',
+      id: 'read'
+    }
+  ];
+
+  searchBookLocationInUpdateResults = (results, bookId) => {
+    this.shelves.forEach(shelf => {
+      if (results[shelf.id].find(shelfBookId => shelfBookId === bookId)) {
+        return shelf.id;
+      }
+    });
+    return undefined;
+  }
+
   onMoveBook = (book, shelfId) => {
     BooksAPI.update(book, shelfId).then(res => {
       this.setState(state => {
         const otherBooks = state.books.filter(other => other.id !== book.id);
         if (res[shelfId] === undefined) {
           // The book has been moved to a shelf that doesn't exist, thus it has been removed.
-          return {books: otherBooks};
+          if (this.searchBookLocationInUpdateResults(res, book.id) === undefined) {
+            console.log('Book succesfully removed.');
+            return {books: otherBooks};
+          } else {
+            console.log('Book removal failed.');
+          }
         }
         book.shelf = shelfId;
-        return {books: otherBooks.concat([book])};
+        if (res[shelfId].find(bookId => bookId === book.id)) {
+          console.log('Book succesfully moved to %s.', shelfId);
+          return {books: otherBooks.concat([book])};
+        } else {
+          console.log('Book move failed.');
+        }
       });
     });
   };
