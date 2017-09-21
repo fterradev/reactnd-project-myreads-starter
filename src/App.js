@@ -57,7 +57,7 @@ class BooksApp extends React.Component {
           }
           book.shelf = shelfId;
           if (res[shelfId].find(bookId => bookId === book.id)) {
-            const shelf = this.shelves.find(shelf => shelf.id = shelfId);
+            const shelf = this.shelves.find(shelf => shelf.id === shelfId);
             notify.show(`Book succesfully moved to ${shelf.title}.`, 'success');
             return {books: otherBooks.concat([book])};
           } else {
