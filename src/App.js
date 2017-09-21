@@ -41,7 +41,7 @@ class BooksApp extends React.Component {
       }
     });
     return undefined;
-  }
+  };
 
   onMoveBook = (book, shelfId) => {
     BooksAPI.update(book, shelfId)
@@ -60,13 +60,17 @@ class BooksApp extends React.Component {
           book.shelf = shelfId;
           if (res[shelfId].find(bookId => bookId === book.id)) {
             const shelf = this.shelves.find(shelf => shelf.id === shelfId);
-            this.enqueueToast(`"${book.title}" succesfully moved to ${shelf.title}.`, 'success');
+            this.enqueueToast(
+              `"${book.title}" succesfully moved to ${shelf.title}.`,
+              'success'
+            );
             return {books: otherBooks.concat([book])};
           } else {
             this.enqueueToast(`"${book.title}" move has failed.`, 'error');
           }
         });
-      }).catch(reason => {
+      })
+      .catch(reason => {
         this.enqueueToast(`"${book.title}" update has failed.`, 'error');
         //console.log(reason);
       });
@@ -105,7 +109,11 @@ class BooksApp extends React.Component {
           exact
           path="/"
           render={() => (
-            <ListBooks shelves={this.shelves} books={this.state.books} onMoveBook={this.onMoveBook} />
+            <ListBooks
+              shelves={this.shelves}
+              books={this.state.books}
+              onMoveBook={this.onMoveBook}
+            />
           )}
         />
       </div>
