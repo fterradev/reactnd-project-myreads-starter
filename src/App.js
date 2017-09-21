@@ -17,6 +17,8 @@ class BooksApp extends React.Component {
     });
   }
 
+  enqueueToast = notify.createShowQueue();
+
   shelves = [
     {
       title: 'Currently Reading',
@@ -49,23 +51,23 @@ class BooksApp extends React.Component {
           if (this.shelves.find(shelf => shelf.id === shelfId) === undefined) {
             // The book has been moved to a shelf that doesn't exist, thus it has been removed.
             if (this.searchBookLocationInUpdateResults(res, book.id) === undefined) {
-              notify.show('Book succesfully removed.', 'success');
+              this.enqueueToast(`"${book.title}" succesfully removed.`, 'success');
               return {books: otherBooks};
             } else {
-              notify.show('Book removal has failed.', 'error');
+              this.enqueueToast(`"${book.title}" removal has failed.`, 'error');
             }
           }
           book.shelf = shelfId;
           if (res[shelfId].find(bookId => bookId === book.id)) {
             const shelf = this.shelves.find(shelf => shelf.id === shelfId);
-            notify.show(`Book succesfully moved to ${shelf.title}.`, 'success');
+            this.enqueueToast(`"${book.title}" succesfully moved to ${shelf.title}.`, 'success');
             return {books: otherBooks.concat([book])};
           } else {
-            notify.show('Book move has failed.', 'error');
+            this.enqueueToast(`"${book.title}" move has failed.`, 'error');
           }
         });
       }).catch(reason => {
-        notify.show('Book update has failed.', 'error');
+        this.enqueueToast(`"${book.title}" update has failed.`, 'error');
         //console.log(reason);
       });
   };
