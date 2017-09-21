@@ -3,6 +3,7 @@ import SearchBooks from './SearchBooks';
 import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
 import { Route } from 'react-router-dom';
+import Notifications, { notify } from 'react-notify-toast';
 import './App.css';
 
 class BooksApp extends React.Component {
@@ -41,27 +42,32 @@ class BooksApp extends React.Component {
   }
 
   onMoveBook = (book, shelfId) => {
-    BooksAPI.update(book, shelfId).then(res => {
-      this.setState(state => {
-        const otherBooks = state.books.filter(other => other.id !== book.id);
-        if (res[shelfId] === undefined) {
-          // The book has been moved to a shelf that doesn't exist, thus it has been removed.
-          if (this.searchBookLocationInUpdateResults(res, book.id) === undefined) {
-            console.log('Book succesfully removed.');
-            return {books: otherBooks};
-          } else {
-            console.log('Book removal failed.');
+    BooksAPI.update(book, shelfId)
+      .then(res => {
+        this.setState(state => {
+          const otherBooks = state.books.filter(other => other.id !== book.id);
+          if (res[shelfId] === undefined) {
+            // The book has been moved to a shelf that doesn't exist, thus it has been removed.
+            if (this.searchBookLocationInUpdateResults(res, book.id) === undefined) {
+              notify.show('Book succesfully removed.', 'success');
+              return {books: otherBooks};
+            } else {
+              notify.show('Book removal has failed.', 'error');
+            }
           }
-        }
-        book.shelf = shelfId;
-        if (res[shelfId].find(bookId => bookId === book.id)) {
-          console.log('Book succesfully moved to %s.', shelfId);
-          return {books: otherBooks.concat([book])};
-        } else {
-          console.log('Book move failed.');
-        }
+          book.shelf = shelfId;
+          if (res[shelfId].find(bookId => bookId === book.id)) {
+            const shelf = this.shelves.find(shelf => shelf.id = shelfId);
+            notify.show(`Book succesfully moved to ${shelf.title}.`, 'success');
+            return {books: otherBooks.concat([book])};
+          } else {
+            notify.show('Book move has failed.', 'error');
+          }
+        });
+      }).catch(reason => {
+        notify.show('Book update has failed.', 'error');
+        //console.log(reason);
       });
-    });
   };
 
   onSearchQueryUpdated = (query, history) => {
@@ -79,6 +85,7 @@ class BooksApp extends React.Component {
     //const searchParam = 'q';
     return (
       <div className="app">
+        <Notifications />
         <Route
           path="/search/:initialQuery?"
           render={({ match, history }) => (
