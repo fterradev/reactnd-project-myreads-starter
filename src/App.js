@@ -45,11 +45,11 @@ class BooksApp extends React.Component {
 
   checkBookRemoval = (bookId, results) => {
     return this.searchBookLocationInUpdateResults(results, bookId) === null;
-  }
+  };
 
   checkBookUpdate = (bookId, shelfId, results) => {
-    return results[shelfId].some(shelfBookId => shelfBookId === bookId)
-  }
+    return results[shelfId].some(shelfBookId => shelfBookId === bookId);
+  };
 
   onMoveBook = (book, shelfId) => {
     BooksAPI.update(book, shelfId)
@@ -71,7 +71,7 @@ class BooksApp extends React.Component {
             const shelf = this.shelves.find(shelf => shelf.id === shelfId);
             this.setState(state => {
               const otherBooks = state.books.filter(other => other.id !== book.id);
-              return {books: otherBooks.concat([book])}
+              return {books: otherBooks.concat([book])};
             });
             this.enqueueToast(
               `"${book.title}" succesfully moved to ${shelf.title}.`,

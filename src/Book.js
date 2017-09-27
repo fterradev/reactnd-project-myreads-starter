@@ -23,8 +23,7 @@ class Book extends Component {
     const imageURL = imageLinks ? imageLinks.thumbnail : null;
     if (imageURL) {
       this.imageSizeGetter = getImageSize(imageURL);
-      this.imageSizeGetter
-        .promise
+      this.imageSizeGetter.promise
         .then(imageSize => {
           this.setState({
             imageURL,
@@ -39,7 +38,7 @@ class Book extends Component {
 
   componentWillUnmount() {
     if (this.imageSizeGetter) {
-      this.imageSizeGetter.cancel();//Cancel processing which would occur on completion of getting the image data.
+      this.imageSizeGetter.cancel(); //Cancel processing which would occur on completion of getting the image data.
     }
   }
 
