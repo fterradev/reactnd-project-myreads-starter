@@ -40,35 +40,47 @@ class BooksApp extends React.Component {
         return shelf.id;
       }
     });
-    return undefined;
+    return null;
   };
+
+  checkBookRemoval = (bookId, results) => {
+    return this.searchBookLocationInUpdateResults(results, bookId) === null;
+  }
+
+  checkBookUpdate = (bookId, shelfId, results) => {
+    return results[shelfId].some(shelfBookId => shelfBookId === bookId)
+  }
 
   onMoveBook = (book, shelfId) => {
     BooksAPI.update(book, shelfId)
       .then(res => {
-        this.setState(state => {
-          const otherBooks = state.books.filter(other => other.id !== book.id);
-          if (!this.shelves.some(shelf => shelf.id === shelfId)) {
-            // There is no shelf with this id, i.e., so the book has been moved to a shelf that doesn't exist, thus it has been removed.
-            if (this.searchBookLocationInUpdateResults(res, book.id) === undefined) {
-              this.enqueueToast(`"${book.title}" succesfully removed.`, 'success');
+        if (!this.shelves.some(shelf => shelf.id === shelfId)) {
+          // There is no shelf with this id, i.e., so the book has been moved to a shelf that doesn't exist, thus it has been removed.
+          if (this.checkBookRemoval(book.id, res)) {
+            this.setState(state => {
+              const otherBooks = state.books.filter(other => other.id !== book.id);
               return {books: otherBooks};
-            } else {
-              this.enqueueToast(`"${book.title}" removal has failed.`, 'error');
-            }
+            });
+            this.enqueueToast(`"${book.title}" succesfully removed.`, 'success');
+          } else {
+            this.enqueueToast(`"${book.title}" removal has failed.`, 'error');
           }
-          book.shelf = shelfId;
-          if (res[shelfId].some(bookId => bookId === book.id)) {
+        } else {
+          if (this.checkBookUpdate(book.id, shelfId, res)) {
+            book.shelf = shelfId;
             const shelf = this.shelves.find(shelf => shelf.id === shelfId);
+            this.setState(state => {
+              const otherBooks = state.books.filter(other => other.id !== book.id);
+              return {books: otherBooks.concat([book])}
+            });
             this.enqueueToast(
               `"${book.title}" succesfully moved to ${shelf.title}.`,
               'success'
             );
-            return {books: otherBooks.concat([book])};
           } else {
             this.enqueueToast(`"${book.title}" move has failed.`, 'error');
           }
-        });
+        }
       })
       .catch(reason => {
         this.enqueueToast(`"${book.title}" update has failed.`, 'error');
