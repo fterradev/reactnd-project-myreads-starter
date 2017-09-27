@@ -1,15 +1,19 @@
-export const getImageSize = url =>
-  new Promise((resolve, reject) => {
-    const image = new Image();
+import { makeCancelable } from './utils/cancelablePromise';
 
-    image.onload = () => {
-      resolve({
-        width: `${image.width}px`,
-        height: `${image.height}px`
-      });
-    };
-    image.onerror = () => {
-      reject('Failed to load image.');
-    };
-    image.src = url;
-  });
+export const getImageSize = url =>
+  makeCancelable(
+    new Promise((resolve, reject) => {
+      const image = new Image();
+
+      image.onload = () => {
+        resolve({
+          width: `${image.width}px`,
+          height: `${image.height}px`
+        });
+      };
+      image.onerror = () => {
+        reject('Failed to load image.');
+      };
+      image.src = url;
+    })
+  );

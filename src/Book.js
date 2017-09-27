@@ -16,11 +16,15 @@ class Book extends Component {
     }
   };
 
+  imageSizeGetter = undefined;
+
   componentDidMount() {
     const { imageLinks } = this.props.data;
     const imageURL = imageLinks ? imageLinks.thumbnail : null;
-    if (imageURL)
-      getImageSize(imageURL)
+    if (imageURL) {
+      this.imageSizeGetter = getImageSize(imageURL);
+      this.imageSizeGetter
+        .promise
         .then(imageSize => {
           this.setState({
             imageURL,
@@ -30,6 +34,13 @@ class Book extends Component {
         .catch(reason => {
           // do nothing - keep initial state
         });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.imageSizeGetter) {
+      this.imageSizeGetter.cancel();//Cancel processing which would occur on completion of getting the image data.
+    }
   }
 
   render() {
