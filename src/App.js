@@ -36,7 +36,7 @@ class BooksApp extends React.Component {
 
   searchBookLocationInUpdateResults = (results, bookId) => {
     this.shelves.forEach(shelf => {
-      if (results[shelf.id].find(shelfBookId => shelfBookId === bookId)) {
+      if (results[shelf.id].some(shelfBookId => shelfBookId === bookId)) {
         return shelf.id;
       }
     });
@@ -48,8 +48,8 @@ class BooksApp extends React.Component {
       .then(res => {
         this.setState(state => {
           const otherBooks = state.books.filter(other => other.id !== book.id);
-          if (this.shelves.find(shelf => shelf.id === shelfId) === undefined) {
-            // The book has been moved to a shelf that doesn't exist, thus it has been removed.
+          if (!this.shelves.some(shelf => shelf.id === shelfId)) {
+            // There is no shelf with this id, i.e., so the book has been moved to a shelf that doesn't exist, thus it has been removed.
             if (this.searchBookLocationInUpdateResults(res, book.id) === undefined) {
               this.enqueueToast(`"${book.title}" succesfully removed.`, 'success');
               return {books: otherBooks};
@@ -58,7 +58,7 @@ class BooksApp extends React.Component {
             }
           }
           book.shelf = shelfId;
-          if (res[shelfId].find(bookId => bookId === book.id)) {
+          if (res[shelfId].some(bookId => bookId === book.id)) {
             const shelf = this.shelves.find(shelf => shelf.id === shelfId);
             this.enqueueToast(
               `"${book.title}" succesfully moved to ${shelf.title}.`,
