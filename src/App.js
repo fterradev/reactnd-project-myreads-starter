@@ -55,7 +55,7 @@ class BooksApp extends React.Component {
     BooksAPI.update(book, shelfId)
       .then(res => {
         if (!this.shelves.some(shelf => shelf.id === shelfId)) {
-          // There is no shelf with this id, i.e., so the book has been moved to a shelf that doesn't exist, thus it has been removed.
+          // There is no shelf with this id, so the book has been moved to a shelf that doesn't exist, thus it has been removed.
           if (this.checkBookRemoval(book.id, res)) {
             this.setState(state => {
               const otherBooks = state.books.filter(other => other.id !== book.id);
