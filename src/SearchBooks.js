@@ -85,10 +85,10 @@ class SearchBooks extends Component {
   componentDidMount() {
     const query = this.props.initialQuery;
     if (query) {
-      this.setState(state => ({
+      this.setState({
         query,
         resultsAreUpToDate: false
-      }));
+      });
       this.search(query, true);
     }
     document.querySelector('input#search-query').focus();
