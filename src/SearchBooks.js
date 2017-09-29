@@ -30,8 +30,8 @@ class SearchBooks extends Component {
   search = (query, bypassQueryUpdate) =>
     BooksAPI.search(query).then(results => {
       this.setState(state => {
+        // check if the query is still the same value supplied for this search request
         if (state.query === query) {
-          // checks if the query is still the same value supplied for this search request
           if (!bypassQueryUpdate) this.onQueryUpdated(query);
           return Array.isArray(results)
             ? {
