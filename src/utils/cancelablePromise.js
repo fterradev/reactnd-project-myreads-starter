@@ -1,3 +1,7 @@
+/**
+ * @author Ivan Starkov <istarkov@gmail.com>
+ * @see {@link https://github.com/facebook/react/issues/5465#issuecomment-157888325}
+ */
 export const makeCancelable = (promise) => {
   let hasCanceled_ = false;
 
