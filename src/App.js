@@ -49,35 +49,48 @@ class BooksApp extends Component {
   checkBookUpdate = (bookId, shelfId, results) =>
     results[shelfId].some(shelfBookId => shelfBookId === bookId);
 
+  notifyBookRemoval = (book, success) => {
+    this.enqueueToast(
+      success
+        ? `"${book.title}" succesfully removed.`
+        : `"${book.title}" removal has failed.`,
+      success ? 'success' : 'error'
+    );
+  };
+
+  notifyBookUpdate = (book, shelf, success) => {
+    this.enqueueToast(
+      success
+        ? `"${book.title}" succesfully moved to ${shelf.title}.`
+        : `"${book.title}" move has failed.`,
+      success ? 'success' : 'error'
+    );
+  };
+
   onMoveBook = (book, shelfId) => {
     BooksAPI.update(book, shelfId)
       .then(res => {
         if (!this.shelves.some(shelf => shelf.id === shelfId)) {
           // There is no shelf with this id, so the book has been moved to a shelf that doesn't exist, thus it has been removed.
-          if (this.checkBookRemoval(book.id, res)) {
+          const bookRemovalSuccess = this.checkBookRemoval(book.id, res);
+          if (bookRemovalSuccess) {
             this.setState(state => {
               const otherBooks = state.books.filter(other => other.id !== book.id);
               return {books: otherBooks};
             });
-            this.enqueueToast(`"${book.title}" succesfully removed.`, 'success');
-          } else {
-            this.enqueueToast(`"${book.title}" removal has failed.`, 'error');
           }
+          this.notifyBookRemovalOutcome(book, bookRemovalSuccess);
         } else {
-          if (this.checkBookUpdate(book.id, shelfId, res)) {
+          const bookUpdateSuccess = this.checkBookUpdate(book.id, shelfId, res);
+          if (bookUpdateSuccess) {
             book.shelf = shelfId;
-            const shelf = this.shelves.find(shelf => shelf.id === shelfId);
             this.setState(state => {
               const otherBooks = state.books.filter(other => other.id !== book.id);
               return {books: otherBooks.concat([book])};
             });
-            this.enqueueToast(
-              `"${book.title}" succesfully moved to ${shelf.title}.`,
-              'success'
-            );
-          } else {
-            this.enqueueToast(`"${book.title}" move has failed.`, 'error');
           }
+          const shelf = this.shelves.find(shelf => shelf.id === shelfId);
+          this.notifyBookUpdate(book, shelf, bookUpdateSuccess);
         }
       })
       .catch(reason => {
