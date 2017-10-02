@@ -1,6 +1,6 @@
 import { makeCancelable } from './utils/cancelablePromise';
 
-export const getImageSize = url =>
+export const getImageSize = url => (
   makeCancelable(
     new Promise((resolve, reject) => {
       const image = new Image();
@@ -18,4 +18,5 @@ export const getImageSize = url =>
 
       image.src = url;
     })
-  );
+  )
+);
