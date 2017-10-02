@@ -21,6 +21,7 @@ class Book extends Component {
   componentDidMount() {
     const { imageLinks } = this.props.data;
     const imageURL = imageLinks ? imageLinks.thumbnail : null;
+
     if (imageURL) {
       this.imageSizeGetter = getImageSize(imageURL);
       this.imageSizeGetter.promise
@@ -60,6 +61,7 @@ class Book extends Component {
                 backgroundImage: imageURL ? `url("${imageURL}")` : ''
               }}
             />
+
             <div className="book-shelf-changer">
               <select
                 value={shelf}
@@ -74,6 +76,7 @@ class Book extends Component {
                 <option value="none">None</option>
               </select>
             </div>
+            
           </div>
           <div className="book-title">{data.title}</div>
           {authors.map((author, index) => (
