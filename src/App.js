@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import SearchBooks from './SearchBooks';
 import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
-import { Route } from 'react-router-dom';
+import { Route, withRouter } from 'react-router-dom';
 import Notifications, { notify } from 'react-notify-toast';
 import './App.css';
 
-class BooksApp extends Component {
+class BooksApp extends PureComponent {
   state = {
     books: []
   };
@@ -144,4 +144,4 @@ class BooksApp extends Component {
   }
 }
 
-export default BooksApp;
+export default withRouter(BooksApp);
