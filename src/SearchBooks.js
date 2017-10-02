@@ -77,10 +77,11 @@ class SearchBooks extends PureComponent {
     }
   }
 
-  formatQuery = query =>
+  formatQuery = query => (
     query
       .replace(/^ {1,}/, '') // remove leading spaces
-      .replace(/ {2,}/g, ' '); // remove duplicated spaces
+      .replace(/ {2,}/g, ' ') // remove duplicated spaces
+  );
 
   componentDidMount() {
     const query = this.props.initialQuery;
