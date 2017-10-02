@@ -11,9 +11,11 @@ export const getImageSize = url =>
           height: `${image.height}px`
         });
       };
+
       image.onerror = () => {
         reject('Failed to load image.');
       };
+
       image.src = url;
     })
   );
