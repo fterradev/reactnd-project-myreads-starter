@@ -43,13 +43,11 @@ class BooksApp extends Component {
     return null;
   };
 
-  checkBookRemoval = (bookId, results) => {
-    return this.searchBookLocationInUpdateResults(results, bookId) === null;
-  };
+  checkBookRemoval = (bookId, results) =>
+    this.searchBookLocationInUpdateResults(results, bookId) === null;
 
-  checkBookUpdate = (bookId, shelfId, results) => {
-    return results[shelfId].some(shelfBookId => shelfBookId === bookId);
-  };
+  checkBookUpdate = (bookId, shelfId, results) =>
+    results[shelfId].some(shelfBookId => shelfBookId === bookId);
 
   onMoveBook = (book, shelfId) => {
     BooksAPI.update(book, shelfId)
