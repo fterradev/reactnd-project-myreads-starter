@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import SearchBooks from './SearchBooks';
 import ListBooks from './ListBooks';
 import * as BooksAPI from './BooksAPI';
@@ -6,7 +6,7 @@ import { Route } from 'react-router-dom';
 import Notifications, { notify } from 'react-notify-toast';
 import './App.css';
 
-class BooksApp extends React.Component {
+class BooksApp extends Component {
   state = {
     books: []
   };
