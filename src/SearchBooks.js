@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import BooksGrid from './BooksGrid';
 import * as BooksAPI from './BooksAPI';
 import debounce from 'debounce';
 import PropTypes from 'prop-types';
 
-class SearchBooks extends Component {
+class SearchBooks extends PureComponent {
   static propTypes = {
     shelfBooks: PropTypes.arrayOf(PropTypes.object).isRequired,
     onMoveBook: PropTypes.func.isRequired,
