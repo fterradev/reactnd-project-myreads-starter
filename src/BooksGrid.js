@@ -3,8 +3,9 @@ import Book from './Book';
 import PropTypes from 'prop-types';
 
 const BooksGrid = ({ shelfId, books, onMoveBook }) => {
-  const gridBooks =
-    shelfId !== undefined ? books.filter(book => book.shelf === shelfId) : books;
+  const gridBooks = (shelfId !== undefined)
+    ? books.filter(book => book.shelf === shelfId)
+    : books;
   return (
     <ol className="books-grid">
       {gridBooks.map(book => 
